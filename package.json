@@ -1,0 +1,69 @@
+{
+  "_args": [
+    [
+      "cordova-plugin-cookiemaster@1.0.5",
+      "/Users/kelchen/repos/ionic4-port"
+    ]
+  ],
+  "_from": "cordova-plugin-cookiemaster@1.0.5",
+  "_id": "cordova-plugin-cookiemaster@1.0.5",
+  "_inBundle": false,
+  "_integrity": "sha512-5cYEH+/85TGmyY+NYdQxLhK6i2RkF57TnQOAtdoz4a3GOycYzD7pGqUBAj2j4DU/KI5As4TwrpZkQS7sX+WO8A==",
+  "_location": "/cordova-plugin-cookiemaster",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "cordova-plugin-cookiemaster@1.0.5",
+    "name": "cordova-plugin-cookiemaster",
+    "escapedName": "cordova-plugin-cookiemaster",
+    "rawSpec": "1.0.5",
+    "saveSpec": null,
+    "fetchSpec": "1.0.5"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/cordova-plugin-cookiemaster/-/cordova-plugin-cookiemaster-1.0.5.tgz",
+  "_spec": "1.0.5",
+  "_where": "/Users/kelchen/repos/ionic4-port",
+  "author": {
+    "name": "Edward Gao"
+  },
+  "bugs": {
+    "url": "https://github.com/edwardgaoyb/cordova-cookie-master/issues"
+  },
+  "cordova": {
+    "id": "com.cordova.plugins.cookiemaster",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "description": "This plugin enables the management of cookies in WebViews on iOS and Android as those platforms restrict the use of \"document.cookie\".",
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "homepage": "https://github.com/edwardgaoyb/cordova-cookie-master#readme",
+  "keywords": [
+    "cordova",
+    "phonegap",
+    "cookie",
+    "cookies",
+    "cookie-manager",
+    "cookie-plugin",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "license": "MIT",
+  "name": "cordova-plugin-cookiemaster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwardgaoyb/cordova-cookie-master.git"
+  },
+  "version": "1.0.5"
+}

@@ -1,5 +1,7 @@
 Change Log
 =============
+v1.0.5
+Fix a bug that the cookie string is truncated when ending with '='
 
 V1.0.2
 Remove the import directive to fix the outdated dependency and compilation error caused by Apache cookie class.
