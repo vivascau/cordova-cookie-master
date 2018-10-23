@@ -7,6 +7,7 @@
 //
 
 #import "CDVCookieMaster.h"
+#import <WebKit/WebKit.h>
 
 
 @implementation CDVCookieMaster
@@ -44,8 +45,6 @@
 
  - (void)setCookieValue:(CDVInvokedUrlCommand*)command
 {
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
-
     CDVPluginResult* pluginResult = nil;
     NSString* urlString = [command.arguments objectAtIndex:0];
     NSString* cookieName = [command.arguments objectAtIndex:1];
@@ -58,12 +57,28 @@
     [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
 
     NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
 
-    NSArray* cookies = [NSArray arrayWithObjects:cookie, nil];
+    if ([self.webView isKindOfClass:[WKWebView class]]) {
+        WKWebView* wkWebView = (WKWebView*) self.webView;
 
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
-    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookies forURL:url mainDocumentURL:nil];
+        if (@available(iOS 11.0, *)) {
+            [wkWebView.configuration.websiteDataStore.httpCookieStore setCookie:cookie completionHandler:^{NSLog(@"Cookie set in WKWebView");}];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"WKWebView requires iOS 11+ in order to set the cookie"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+            return;
+        }
+    } else {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+
+        NSArray* cookies = [NSArray arrayWithObjects:cookie, nil];
+
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookies forURL:url mainDocumentURL:nil];
+    }
 
     pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Set cookie executed"];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
