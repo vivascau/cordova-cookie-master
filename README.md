@@ -1,11 +1,3 @@
-Change Log
-=============
-v1.0.5
-Fix a bug that the cookie string is truncated when ending with '='
-
-V1.0.2
-Remove the import directive to fix the outdated dependency and compilation error caused by Apache cookie class.
-
 Cookie Master
 ==============
 
@@ -19,7 +11,7 @@ As you may already know, WebViews on Android and iOS platforms do not support re
 
 Install with Cordova CLI
 
-    $ cordova plugin add cordova-plugin-cookiemaster
+    $ cordova plugin add @kevinkelchen/cordova-plugin-cookiemaster
 
 ## Usage
 ### Get cookie value
@@ -63,6 +55,6 @@ cookieMaster.clearCookies(
 This plugin is distributed under the MIT License.
 
 ## Thanks to
-This plugin is a fork from Kristian Hristov's "cookie master" plugin. The author is not maintaining the plugin, so I created a new branch to include fixes and support to new OS versions.
+This plugin is a fork of Edward Gao's "cookie master" plugin which was forked from Kristian Hristov's "cookie master" plugin. This fork is adding experimental WKWebView support and **may be short-lived**.
 
 This plugin was inspired by the great work on the CookieMonster plugin by @barrettc
