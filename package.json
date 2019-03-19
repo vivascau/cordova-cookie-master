@@ -6,7 +6,7 @@
     "url": "https://github.com/Cartegraph/cordova-cookie-master/issues"
   },
   "cordova": {
-    "id": "com.cordova.plugins.cookiemaster",
+    "id": "cordova-cookie-master",
     "platforms": [
       "ios",
       "android"
@@ -37,5 +37,5 @@
     "type": "git",
     "url": "git+https://github.com/Cartegraph/cordova-cookie-master.git"
   },
-  "version": "0.1.2"
+  "version": "1.1.0"
 }
