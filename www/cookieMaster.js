@@ -20,6 +20,13 @@ var cookieMaster = {
                     'CookieMaster', 'clearCookies',
                     []
         );
-    }
+    },
+    clearCookie: function(url, cookieName, successCallback, errorCallback) {
+      cordova.exec(successCallback,
+                  errorCallback,
+                  'CookieMaster', 'clearCookie',
+                  [url, cookieName]
+      );
+    },
 };
 module.exports = cookieMaster;

@@ -97,4 +97,44 @@
     [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
+- (void)clearCookie:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    NSString* urlString = [command.arguments objectAtIndex:0];
+    NSString* cookieName = [command.arguments objectAtIndex:1];
+
+    NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+    [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
+    [cookieProperties setObject:"@InvalidCookie" forKey:NSHTTPCookieValue];
+    [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
+    [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
+
+    NSHTTPCookie *cookie = [NSHTTPCookie cookieWithProperties:cookieProperties];
+
+    if ([self.webView isKindOfClass:[WKWebView class]]) {
+        WKWebView* wkWebView = (WKWebView*) self.webView;
+
+        if (@available(iOS 11.0, *)) {
+            [wkWebView.configuration.websiteDataStore.httpCookieStore setCookie:cookie completionHandler:^{NSLog(@"Cookie cleared in WKWebView");}];
+        } else {
+            pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:@"WKWebView requires iOS 11+ in order to clear the cookie"];
+            [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+
+            return;
+        }
+    } else {
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookie];
+
+        NSArray* cookies = [NSArray arrayWithObjects:cookie, nil];
+
+        NSURL *url = [[NSURL alloc] initWithString:urlString];
+        [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookies:cookies forURL:url mainDocumentURL:nil];
+    }
+
+    pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:@"Clear cookie executed"];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+}
+
 @end

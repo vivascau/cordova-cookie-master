@@ -19,6 +19,7 @@ public class CookieMaster extends CordovaPlugin {
     public static final String ACTION_GET_COOKIE_VALUE = "getCookieValue";
     public static final String ACTION_SET_COOKIE_VALUE = "setCookieValue";
     public static final String ACTION_CLEAR_COOKIES = "clearCookies";
+    public static final String ACTION_CLEAR_COOKIE = "clearCookie";
 
     @Override
     public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -72,6 +73,7 @@ public class CookieMaster extends CordovaPlugin {
                         String cookieString = cookie.toString().replace("\"", "");
                         CookieManager cookieManager = CookieManager.getInstance();
                         cookieManager.setCookie(url, cookieString);
+                        cookieManager.flush(); // Sync the cookie to persistent storage.
 
                         PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully added cookie");
                         callbackContext.sendPluginResult(res);
@@ -82,11 +84,32 @@ public class CookieMaster extends CordovaPlugin {
                 }
             });
             return true;
-        }
-
-        else if (ACTION_CLEAR_COOKIES.equals(action)) {
+        } else if (ACTION_CLEAR_COOKIES.equals(action)) {
             CookieManager.getInstance().removeAllCookie();
             callbackContext.success();
+            return true;
+        } else if (ACTION_CLEAR_COOKIE.equals(action)) {
+            final String url = args.getString(0);
+            final String cookieName = args.getString(1);
+
+            cordova.getThreadPool().execute(new Runnable() {
+                public void run() {
+                    try {
+                        HttpCookie cookie = new HttpCookie(cookieName, "InvalidCookie");
+
+                        String cookieString = cookie.toString().replace("\"", "");
+                        CookieManager cookieManager = CookieManager.getInstance();
+                        cookieManager.setCookie(url, cookieString);
+                        cookieManager.flush(); // Sync the invalid cookie to persistent storage in order to overwrite the valid cookie.
+
+                        PluginResult res = new PluginResult(PluginResult.Status.OK, "Successfully cleared cookie");
+                        callbackContext.sendPluginResult(res);
+                    } catch (Exception e) {
+                        Log.e(TAG, "Exception: " + e.getMessage());
+                        callbackContext.error(e.getMessage());
+                    }
+                }
+            });
             return true;
         }
 
