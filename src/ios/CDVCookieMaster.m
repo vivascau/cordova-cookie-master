@@ -105,7 +105,7 @@
 
     NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
     [cookieProperties setObject:cookieName forKey:NSHTTPCookieName];
-    [cookieProperties setObject:"@InvalidCookie" forKey:NSHTTPCookieValue];
+    [cookieProperties setObject:@"InvalidCookie" forKey:NSHTTPCookieValue];
     [cookieProperties setObject:urlString forKey:NSHTTPCookieOriginURL];
     [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
 
