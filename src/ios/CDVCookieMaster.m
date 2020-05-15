@@ -17,13 +17,13 @@
     __block CDVPluginResult* pluginResult = nil;
     NSString* urlString = [command.arguments objectAtIndex:0];
     __block NSString* cookieName = [command.arguments objectAtIndex:1];
-    
     if (urlString != nil) {
         if ([self.webView isKindOfClass:[WKWebView class]]) {
             WKWebView* wkWebView = (WKWebView*) self.webView;
             if (@available(iOS 11.0, *)) {
                 [wkWebView.configuration.websiteDataStore.httpCookieStore getAllCookies:^(NSArray* cookies) {
                     __block NSString *cookieValue;
+                 
                     [cookies enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                            NSHTTPCookie *cookie = obj;
 
@@ -33,7 +33,6 @@
                                *stop = YES;
                            }
                        }];
-                    
                     if (cookieValue != nil) {
                         pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:@{@"cookieValue":cookieValue}];
                     } else {
